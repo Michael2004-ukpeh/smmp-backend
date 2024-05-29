@@ -56,8 +56,8 @@ const userSchema = new mongoose.Schema(
     },
     image: {
       type: {
-        logoUrl: String,
-        pubblicId: String,
+        imageUrl: String,
+        publicId: String,
       },
     },
   },

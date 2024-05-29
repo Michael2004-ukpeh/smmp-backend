@@ -35,9 +35,9 @@ exports.signUp = catchAsync(async (req, res, next) => {
   const { firstName, lastName, email, password } = req.body;
   let payload = { firstName, lastName, email, password };
   const newUser = await User.create(payload);
-  // Generate 5 digit Otp
+  // Generate 6 digit Otp
 
-  const otp = Math.floor(10000 + Math.random() * 90000).toString();
+  const otp = Math.floor(100000 + Math.random() * 900000).toString();
   const otpExpiration = Date.now() + 10 * 60 * 1000;
   const hashedOtp = await bcrypt.hash(otp, 12);
 
@@ -270,8 +270,8 @@ exports.verifyEmail = catchAsync(async (req, res, next) => {
 
 exports.sendOtp = catchAsync(async (req, res, next) => {
   const { email } = req.body;
-  // Generate 5 digit Otp
-  const otp = Math.floor(10000 + Math.random() * 90000).toString();
+  // Generate 6 digit Otp
+  const otp = Math.floor(100000 + Math.random() * 900000).toString();
   const otpExpiration = Date.now() + 10 * 60 * 1000;
   const hashedOtp = await bcrypt.hash(otp, 12);
 
