@@ -6,5 +6,9 @@ const AppError = require('./../utils/AppError');
 exports.getAllChats = catchAsync(async (req, res, next) => {
   const { _id: userId } = req.user;
 
-  next();
+  const chats = await Chat.find({ members: userId }).populate('members');
+  res.status(200).json({
+    status: 'success',
+    data: chats,
+  });
 });
