@@ -15,6 +15,12 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Last name is  required'],
     },
+    fullName: {
+      type: String,
+    },
+    title: {
+      type: String,
+    },
     email: {
       type: String,
       required: [true, 'Email address is required'],
@@ -36,7 +42,6 @@ const userSchema = new mongoose.Schema(
       enum: ['student', 'lecturer'],
       default: 'student',
     },
-
     isVerified: {
       type: Boolean,
       default: false,
@@ -60,6 +65,9 @@ const userSchema = new mongoose.Schema(
         publicId: String,
       },
     },
+    currentRoomId: {
+      type: String,
+    },
   },
   {
     strict: true,
@@ -77,6 +85,13 @@ const userSchema = new mongoose.Schema(
 userSchema.pre('save', async function (next) {
   if (this.isNew === true) {
     this.password = await bcrypt.hash(this.password, 12);
+    if (this.status == 'lecturer') {
+      this.fullName = this.title + ' ' + this.firstName + ' ' + this.lastName;
+      this.status = 'lecturer';
+    } else {
+      this.status = 'student';
+      this.fullName = this.firstName + ' ' + this.lastName;
+    }
   }
   next();
 });

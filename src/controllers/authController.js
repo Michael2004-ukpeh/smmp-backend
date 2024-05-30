@@ -32,8 +32,8 @@ const createAndSendToken = async (data, statusCode, res, next) => {
 };
 
 exports.signUp = catchAsync(async (req, res, next) => {
-  const { firstName, lastName, email, password } = req.body;
-  let payload = { firstName, lastName, email, password };
+  let payload = req.body;
+  let email = payload.email;
   const newUser = await User.create(payload);
   // Generate 6 digit Otp
 
@@ -60,7 +60,7 @@ exports.signUp = catchAsync(async (req, res, next) => {
     text: `
       Welcome to SMMP . Confirm you signed up
       
-      Please click ${process.env.CLIENT_ROUTE}/signup/step_two
+      
   
       Here is your OTP: ${otp}
       It expires in a day
@@ -83,7 +83,7 @@ exports.login = catchAsync(async (req, res, next) => {
     if (!user || !(await user.isCorrectPassword(password, user.password))) {
       return next(new AppError('Email or Password is incorrect', 401));
     }
-    if (user.isVerified === false) {
+    if (user.isVerified === false && user.status === 'student') {
       return next(new AppError('Please verify your email', 401));
     }
     const { token, refreshToken } = signToken(user._id);

@@ -13,6 +13,7 @@ const chatSchema = new mongoose.Schema(
       type: mongoose.Schema.ObjectId,
       ref: 'Message',
     },
+    roomId: String,
   },
   {
     strict: true,
